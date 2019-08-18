@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <% include partials/meta.ejs %> 
+    </head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <% include partials/header.ejs %> 
+  <div class="section upload-main">
+      <p>Connect your device with this code: <%= data.code %> </p>
+      <p>Connection ID: <%= data._id %> </p>
+      <div class="container">
+          <row>
+                <form>
+                        <div class="nine columns">
+                                <textarea class="u-full-width text">Send files, links, texts, etc</textarea>
+                        </div>
+                        <!-- <label class="example-send-yourself-copy">
+                            <input type="checkbox">
+                            <span class="label-body">Send a copy to yourself</span>
+                        </label> -->
+                        <div class="one-third column btn-container">
+                                <button class="button-primary file-btn"><i class="fa fa-paperclip"></i><span>FILE</span></button>
+                        </div>
+                        <div class="one-third column btn-container">
+                                <button class="button-primary"><i class="fa fa-arrow-circle-right"></i><span>SEND</span></button>
+                        </div>
+                </form>
+          </row>
+        </div>
+  </div>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

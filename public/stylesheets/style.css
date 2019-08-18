@@ -1,0 +1,113 @@
+.header{
+    background: #7ddeec;
+}
+
+h1{
+    color:white;
+}
+
+.upload-main{
+    background: -webkit-linear-gradient(45deg, #5c98a1 62%,#7ddeec 48%);
+}    
+
+.text{
+    background: #ffffff00;
+    border: 0;
+    border-bottom: 1px solid white;
+    color: white;    
+    overflow: hidden;
+    overflow-wrap: break-word;
+    resize: none;
+    margin-left: 0px;
+    margin-right: 0px;
+
+    height: 46px;
+}
+
+.btn-container{
+    margin: 5px;
+}
+
+
+.icons{
+    font-size: 35px;    
+}
+/* .main{
+    background-image: url(../images/undraw_uploading_go67.png);
+    background-size: cover;
+    color: #fff;
+    padding-bottom: 5rem;    
+} */
+
+.header h1{
+    margin-bottom:0;
+}
+
+.hero{
+    background: -webkit-linear-gradient(45deg, #ffffff 62%,#7ddeec 48%);
+}
+
+.section {
+    padding: 8rem 0 7rem;
+    text-align: center;
+}
+
+.phones {
+    position: relative;
+}
+.connected-world {
+    position: relative;
+    max-width: 80%;
+    margin: 3rem auto -12rem;
+}
+
+@media (min-width: 750px){
+    .hero {
+        padding: 16rem 0 14rem;
+    }
+    
+}
+@media (min-width: 550px){
+.hero {
+    padding-bottom: 12rem;
+    text-align: left;
+    height: 165px;
+}
+}
+
+@media (min-width: 550px){
+.section {
+    padding: 12rem 0 11rem;
+}
+}
+@media (min-width: 750px)  {
+    .hero {
+        padding: 16rem 0 14rem;
+    }
+}
+
+
+@media (min-width: 1000px){
+.connected-world {
+    top: -16rem;
+    max-height: 615px;
+}
+}
+
+@media (min-width: 750px){
+.connected-world {
+    top: -14rem;
+    right: 5rem;
+    max-height: 510px;
+}
+}
+
+@media (min-width: 550px){
+.connected-world {
+    position: absolute;
+    top: -7rem;
+    right: 3rem;
+    max-height: 362px;
+    z-index: 3;
+}
+}

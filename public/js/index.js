@@ -1,13 +1,18 @@
 
 const socket = io('/');
 
-window.addEventListener('DOMContentLoaded', (event) => {
-    console.log('DOM fully loaded and parsed');
-    var startBTN = document.getElementsByClassName('start-connection')[0];
-    const data = {
-        _id: 'rfwdwqrfqweawf6y5665YE'
-    }
-    startBTN.addEventListener('click', function(){
-        socket.emit('start', data);
-    })
+function domReady(exec){
+    if(document.readyState = 'loading') exec();
+
+
+    else if (document.addEventListener)
+        document.addEventListener('DOMContentLoaded', exec);
+        
+    else document.attachEvent('onreadystatechange', function() {
+        if(document.readyState == 'complete') exec();
+    });
+}
+
+domReady(function() {
+
 });

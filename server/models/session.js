@@ -15,7 +15,7 @@ const SessionSchema = new Schema({
     code: {
         type: String,
         required: true,
-        default:'123 968'
+        default: () => Math.random().toString().slice(5,11) 
     },
 });
 

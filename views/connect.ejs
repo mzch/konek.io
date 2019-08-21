@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <% include partials/meta.ejs %> 
+    </head>
+<body>
+
+  <!-- Primary Page Layout
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <% include partials/header.ejs %> 
+  <div class="section upload-main">
+      <p>Enter a valid code to connect</p>
+      <div class="container">
+          <row>
+                <form method="POST" action="/connect">
+                        <div class="nine columns">
+                               <input name="code" class="u-full-width" type="text" placeholder="Enter code">
+                        </div>
+                        <div class="one-third column btn-container">
+                                <button class="button-primary connect"><i class="fa fa-arrow-circle-right"></i><span>CONNECT</span></button>
+                        </div>
+                </form>
+          </row>
+        </div>
+  </div>
+<!-- End Document
+  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+</body>
+</html>

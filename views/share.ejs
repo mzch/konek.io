@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <% include partials/meta.ejs %> 
+        <script src="/js/emitter.js"></script>
     </head>
 <body>
 
@@ -10,7 +11,8 @@
   <% include partials/header.ejs %> 
   <div class="section upload-main">
       <p>Connect your device with this code: <%= data.code %> </p>
-      <p>Connection ID: <%= data._id %> </p>
+      <p>Connection ID: <span id="sess-uid"><%= data._id %></span> </p>
+      <p>Clients connected: <span id="clients-count"><%= clients_count %></span> </p>
       <div class="container">
           <row>
                 <form>
@@ -25,7 +27,7 @@
                                 <button class="button-primary file-btn"><i class="fa fa-paperclip"></i><span>FILE</span></button>
                         </div>
                         <div class="one-third column btn-container">
-                                <button class="button-primary"><i class="fa fa-arrow-circle-right"></i><span>SEND</span></button>
+                                <button class="button-primary send-data"><i class="fa fa-arrow-circle-right"></i><span>SEND</span></button>
                         </div>
                 </form>
           </row>

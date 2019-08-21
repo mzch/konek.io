@@ -2,6 +2,8 @@ const express = require('express');
 var session = require('express-session')
 const bodyParser = require("body-parser");
 const io = require('./helpers/socket');
+
+const socketio = require('socket.io');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
@@ -23,10 +25,10 @@ db.once('open', () => {
     
 */
 const port = process.env.PORT || 8080;
-io.listen(app.listen(port, () => console.log(`RUNNING on ${port}`)));
+const socketSession = socketio.listen(app.listen(port, () => console.log(`RUNNING on ${port}`)));
 app.use(session({ resave: true ,secret: '123456' , saveUninitialized: true}));
-app.use(bodyParser.urlencoded({extends: false}));
 app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({extended: false}));
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
 
@@ -56,14 +58,52 @@ app.get('/', function(req, res) {
 //     res.redirect(`/share/${req.session._id}`)
 // });
 
+socketSession.on('connection', (socket) => {
+    console.log("A new user just connected");
+  
+    socket.on('join', (session) => {
+      console.log('NEW CLIENT JOINED SESSION:', session)
+      socket.join(session);
+      socket['session-identity'] = session;
+      console.log('SESSION CLIENTS:', socketSession.sockets.adapter.rooms[session].sockets)
+
+      socketSession.to(session).emit('updateClients', socketSession.sockets.adapter.rooms[session].sockets);
+    })
+    
+
+    socket.on('disconnect', () => {
+        const socketFrom = socket['session-identity'];
+        socketSession.to(socketFrom).emit('updateClients', socketSession.sockets.adapter.rooms[socketFrom].sockets);
+    });
+});
+
+function ValidateCode(req, res, next){
+    Session.findOne({ code: req.body.code })
+    // .select('+password')
+    .exec((err, session) => {
+        if (err) throw err;
+
+        if (session && req.body.code === session.code) {
+            const payload = {
+                connections: session.connections,
+                code: session.code,
+                _id: session._id
+            };
+            req.session.data = payload;
+            next()
+        } else {
+            res.render('error', {message: 'invalid code'});
+        }
+});
+}
 
 function loadSession(req, res, next){
-
+          
      if(!req.session.data){
-         console.log('da')
+         console.log('Require attributes are empty')
         return res.render('error', {message: 'invalid code'});
     }
-
+    
     Session.findOne({ _id: req.session.data._id })
         // .select('+password')
         .exec((err, session) => {
@@ -75,7 +115,7 @@ function loadSession(req, res, next){
                     code: session.code,
                     _id: session._id
                 };
-                res.render('share', {data: payload});
+                res.render('share', {data: payload, clients_count: 0});
             } else {
                 res.render('error', {message: 'invalid code'});
             }
@@ -83,7 +123,7 @@ function loadSession(req, res, next){
 } 
 
 function generateSession(req, res, next){
-    console.log('new session')
+    
             const session = new Session({});
             session.save((err, data) => {
                 if (err) {
@@ -103,6 +143,14 @@ function generateSession(req, res, next){
 
 app.get('/share', generateSession, loadSession);
 app.get('/share/:session', loadSession)
+
+app.get('/connect', connectToSession);
+app.post('/connect', ValidateCode, loadSession);
+
+function connectToSession(req, res){
+    res.render('connect')
+}
+
 
 
 // app.get('/share/:session', function(req, res) {

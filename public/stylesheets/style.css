@@ -1,3 +1,32 @@
+
+/* fixed social*/
+#fixed-social {
+    position: fixed;
+    top: 130px;
+    z-index:60
+ }
+ 
+ #fixed-social a {
+    color: #fff;
+    display: block;
+    height: 40px;
+    position: relative;
+    text-align: center;
+     line-height: 40px;
+    width: 40px;
+    margin-bottom: 1px;
+    z-index: 2;
+ }
+
+  .fixed-facebook{
+      background-color: #00AAE5;
+  }
+  .fixed-facebook span{
+     background-color: #00AAE5;
+  }
+  
+
+
 .header{
     background: #7ddeec;
 }
@@ -6,10 +35,55 @@ h1{
     color:white;
 }
 
-.upload-main{
+/* .upload-main{
     background: -webkit-linear-gradient(45deg, #5c98a1 62%,#7ddeec 48%);
-}    
+}     */
+a {
+    text-decoration: none;
+}
+.bg{
+    background-image: url('/images/undraw_going_up_ttm5.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 240px;
+    background-position: center;
+}
 
+.clip{
+    position: relative;
+    left: 100%;
+    top: 0;
+    font-size: 25px;
+    color: #46445a;
+    cursor: pointer;
+}
+.messages{
+    border-left: 1px solid #63efff;
+    /* border-radius: 12px; */
+    text-align: left;
+    padding: 5px;
+    font-size: 23px;
+    word-break: break-all;
+}
+
+#sess-uid{
+    opacity: 0;
+}
+
+#uid{
+    color: #ff6363;
+    font-weight: bold;
+}
+.download{
+    margin-left: 6px;
+}
+#text-area{
+    border-bottom: 1px solid #ffa000;
+    border: 1px solid #68c881;
+    box-shadow: 0 1px 0 0 #63efff;
+    border-radius: 100px;
+    padding: 20px;
+}
 .text{
     background: #ffffff00;
     border: 0;
@@ -28,6 +102,43 @@ h1{
     margin: 5px;
 }
 
+.custom-btn, .send-data{
+    font-size: 20px !important;
+}
+
+.icon{
+    margin-right: 10px;
+}
+
+.not-found{
+    background-image: url('/images/undraw_Taken_if77 (1).png');
+    background-size: cover;
+    background-position: center;
+    height: 77vh;
+    overflow: hidden;
+}
+
+
+.custom-btn{
+    color: #FFF;
+    background-color: #33C3F0;
+    border-color: #33C3F0;
+    display: inline-block;
+    height: 38px;
+    padding: 0 30px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 38px;
+    letter-spacing: .1rem;
+    text-transform: uppercase;
+    text-decoration: none;
+    white-space: nowrap;
+    border-radius: 4px;
+    border: 1px solid #bbb;
+    cursor: pointer;
+    box-sizing: border-box;    
+}
 
 .icons{
     font-size: 35px;    

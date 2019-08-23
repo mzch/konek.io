@@ -1,13 +1,17 @@
 const express = require('express');
+const fs = require('fs');
 var session = require('express-session')
 const bodyParser = require("body-parser");
 const io = require('./helpers/socket');
-
+const multer = require('multer');
 const socketio = require('socket.io');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const Session = require('./models/session');
+const Text = require('./models/text');
+const File = require('./models/file');
+const DataUri = require('datauri');
 const database = 'mongodb://konek:newoneio12@ds263927.mlab.com:63927/konek';
 mongoose.connect(database, { useNewUrlParser: true });
 const db = mongoose.connection;
@@ -15,10 +19,12 @@ const db = mongoose.connection;
 db.on('error', (err) => {
     console.log(err);
 });
-
 db.once('open', () => {
     console.log('connection established');
 });
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
 
 /* PARSER 
@@ -70,11 +76,27 @@ socketSession.on('connection', (socket) => {
       socketSession.to(session).emit('updateClients', socketSession.sockets.adapter.rooms[session].sockets);
     })
     
+    socket.on('newFile', function(event) {
+        console.log('NEW FILES', event.data)
+        socket.to(event.session).emit('updateFiles', event.data);
+        
+    })
 
-    socket.on('disconnect', () => {
-        const socketFrom = socket['session-identity'];
-        socketSession.to(socketFrom).emit('updateClients', socketSession.sockets.adapter.rooms[socketFrom].sockets);
-    });
+    socket.on('newText', function(event) {
+        console.log('NEW TEXT', event)
+        socket.to(event.session).emit('updateText', event.data);
+        
+    })
+
+    // socketSession.on('connection', (socket) => {
+    //     console.log('emit new files')
+    //     socket.emit('newFile', ok.FileArray)
+    // })
+    // socket.on('disconnect', () => {
+    //     const socketFrom = socket['session-identity'];
+    //     socketSession.to(socketFrom).emit('updateClients', socketSession.sockets.adapter.rooms[socketFrom].sockets);
+    //     delete socket['session-identity'];
+    // });
 });
 
 function ValidateCode(req, res, next){
@@ -94,7 +116,7 @@ function ValidateCode(req, res, next){
         } else {
             res.render('error', {message: 'invalid code'});
         }
-});
+    });
 }
 
 function loadSession(req, res, next){
@@ -141,11 +163,84 @@ function generateSession(req, res, next){
 }
 
 
-app.get('/share', generateSession, loadSession);
-app.get('/share/:session', loadSession)
 
+function handleFiles(req, res, next) {
+    var buffer = req.file.buffer
+    var finalImg = {
+         contentType: req.file.mimetype,
+         image:  new Buffer(buffer, 'base64'),
+         fileName: req.file.originalname,
+         size: req.file.size
+      };
+
+      File.findOneAndUpdate( { 
+          SessionId : req.session.data._id  
+        },  
+        { 
+            $push: { 
+                    FileArray: finalImg  
+                } 
+        }, 
+        { 
+            upsert : true ,
+            new: true
+        }, 
+        
+        (err, ok) => {
+            if(err){
+                return res.status(501).json({ data: [], code: 501 });
+            }
+
+            if(ok){
+                return res.status(200).json({ data: ok, code: 200 });
+            }
+      });
+    
+    
+}
+
+function checkContentType(req, res, next){
+        const text = {
+            text: req.body.text,
+            _id: mongoose.Types.ObjectId()
+        };
+        console.log(req.body)
+        Text.findOneAndUpdate( { 
+            SessionId : req.session.data._id  
+          },  
+          { 
+              $push: { 
+                      TextArray: text 
+                  } 
+          }, 
+          { 
+              upsert : true ,
+              new: true
+          }, 
+          
+          (err, ok) => {
+              if(err){
+                  return res.status(501).json({ data: [], code: 501 });
+              }
+  
+              if(ok){
+                  return res.status(200).json({ data: ok, code: 200 });
+              }
+        });
+}
+
+
+app.get('/share', generateSession, loadSession);
+
+app.get('/share/:session', loadSession)
+app.post('/share/file', upload.single('sessionFile'), handleFiles)
+app.post('/share/message', checkContentType)
 app.get('/connect', connectToSession);
 app.post('/connect', ValidateCode, loadSession);
+app.use(function(req, res, next) {
+    return res.status(404).render('404');
+  });
+
 
 function connectToSession(req, res){
     res.render('connect')
@@ -176,3 +271,4 @@ function connectToSession(req, res){
 //             }
 //     });
 // })
+

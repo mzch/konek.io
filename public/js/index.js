@@ -1,6 +1,4 @@
 
-const socket = io('/');
-
 function domReady(exec){
     if(document.readyState = 'loading') exec();
 
@@ -14,5 +12,6 @@ function domReady(exec){
 }
 
 domReady(function() {
+
 
 });

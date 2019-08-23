@@ -12,6 +12,7 @@
             const dataForm = document.getElementsByClassName('connection-files')[0];
             const filesContainer = document.getElementsByClassName('files-container')[0]
             socket.on('connect', function() {
+                console.log(session.innerText)
                 socket.emit('join', session.innerText)
               });
 
@@ -137,6 +138,9 @@
                         const a = document.createElement('a');
                         a.classList.add('button', 'download')
                         a.innerText = 'Download'
+                        // 'data:image/jpeg;base64,/9j/4AAQSkZ...'
+                        a.setAttribute('href', `data:${res.data.FileArray[res.data.FileArray.length - 1].contentType};base64,${res.data.FileArray[res.data.FileArray.length - 1].image}`)
+                        a.setAttribute('download', res.data.FileArray[res.data.FileArray.length - 1].fileName)
                         row.appendChild(column);
                         column.appendChild(h3)
                         column.appendChild(span)

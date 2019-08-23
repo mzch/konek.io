@@ -68,10 +68,12 @@ socketSession.on('connection', (socket) => {
     console.log("A new user just connected");
   
     socket.on('join', (session) => {
-      console.log('NEW CLIENT JOINED SESSION:', session)
+    //   console.log('NEW CLIENT JOINED SESSION:', session)
+      console.log(session)
       socket.join(session);
       socket['session-identity'] = session;
-      console.log('SESSION CLIENTS:', socketSession.sockets.adapter.rooms[session].sockets)
+      
+    //   console.log('SESSION CLIENTS:', socketSession.sockets.adapter.rooms[session].sockets)
 
       socketSession.to(session).emit('updateClients', socketSession.sockets.adapter.rooms[session].sockets);
     })
@@ -88,15 +90,19 @@ socketSession.on('connection', (socket) => {
         
     })
 
-    // socketSession.on('connection', (socket) => {
-    //     console.log('emit new files')
-    //     socket.emit('newFile', ok.FileArray)
-    // })
-    // socket.on('disconnect', () => {
-    //     const socketFrom = socket['session-identity'];
-    //     socketSession.to(socketFrom).emit('updateClients', socketSession.sockets.adapter.rooms[socketFrom].sockets);
-    //     delete socket['session-identity'];
-    // });
+
+    socket.on('disconnect', () => {
+        const socketFrom = socket['session-identity'];
+        // console.log(socketSession.sockets.adapter.rooms[socketFrom])
+        if(socketSession.sockets.adapter.rooms[socketFrom] === undefined){
+            console.log('no sockets to broadcast')
+            return;
+        }
+
+        socketSession.to(socketFrom).emit('updateClients', socketSession.sockets.adapter.rooms[socketFrom].sockets);
+        delete socket['session-identity'];
+        console.log('done')
+    });
 });
 
 function ValidateCode(req, res, next){
@@ -165,6 +171,7 @@ function generateSession(req, res, next){
 
 
 function handleFiles(req, res, next) {
+    console.log(req.file)
     var buffer = req.file.buffer
     var finalImg = {
          contentType: req.file.mimetype,

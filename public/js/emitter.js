@@ -23,7 +23,6 @@
 
             socket.on('updateText', function(text){
                 console.log(text)
-                text.data.TextArray.forEach((i) => {
                     const row = document.createElement('div');
                     row.classList.add('row', 'message');
                     const column = document.createElement('div');
@@ -64,7 +63,6 @@
                     // i.setAttribute('aria-hidden', 'true')
                     // span.appendChild(i)
                     // filesContainer.prepend(row)
-                })
             })
 
             socket.on('updateFiles', function(file){

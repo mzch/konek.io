@@ -7,7 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "nodemon": "nodemon server/index.js",
     "dev": "webpack --watch --config webpack.config.js --mode development",
-    "concurrently": "concurrently \"npm run nodemon\" \"npm run dev\" "
+    "prod": "webpack --watch --config webpack.config.js --mode production",
+    "concurrently": "concurrently \"npm run nodemon\" \"npm run dev\" ",
+    "start": "concurrently \"npm run nodemon\" \"npm run prod\" "
   },
   "keywords": [],
   "author": "",

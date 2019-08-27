@@ -59,8 +59,8 @@
                 a.classList.add('button', 'download')
                 a.innerText = 'Download'
                 // 'data:image/jpeg;base64,/9j/4AAQSkZ...'
-                a.setAttribute('href', `data:${res.data.contentType};base64,${res.data.image}`)
-                a.setAttribute('download', res.data.fileName)
+                a.setAttribute('href', `data:${file.data.contentType};base64,${file.data.image}`)
+                a.setAttribute('download', file.data.fileName)
                 row.appendChild(column);
                 column.appendChild(h3)
                 column.appendChild(span)

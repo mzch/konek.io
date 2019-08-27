@@ -46,11 +46,10 @@ app.post('/share/file', upload.single('sessionFile'), function handleFiles(req, 
     var buffer = req.file.buffer
     var finalImg = {
          contentType: req.file.mimetype,
-         image:  new Buffer(buffer, 'base64'),
+         image:  new Buffer(buffer, 'base64').toString('base64'),
          fileName: req.file.originalname,
          size: req.file.size
       };
-
       res.status(200).json({ data: finalImg, code: 200 });
     
     

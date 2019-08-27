@@ -6,6 +6,7 @@ const socketio = require('socket.io');
 
 var socketUtility = (app) => {
     const socketSession = socketio.listen(app)
+    
     socketSession.on('connection', (socket) => {
         console.log("A new user just connected");
       

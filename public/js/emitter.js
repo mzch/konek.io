@@ -47,7 +47,6 @@
             })
 
             socket.on('updateFiles', function(file){
-                console.log(file)
                 const row = document.createElement('div');
                 row.classList.add('row');
                 const column = document.createElement('div');
@@ -57,13 +56,17 @@
                 const span = document.createElement('span');
                 span.innerText = formatBytes(file.data.size);
                 const a = document.createElement('a');
-                a.classList.add('button')
+                a.classList.add('button', 'download')
                 a.innerText = 'Download'
+                // 'data:image/jpeg;base64,/9j/4AAQSkZ...'
+                a.setAttribute('href', `data:${res.data.contentType};base64,${res.data.image}`)
+                a.setAttribute('download', res.data.fileName)
                 row.appendChild(column);
                 column.appendChild(h3)
                 column.appendChild(span)
                 column.appendChild(a)
                 filesContainer.prepend(row)
+                
             })
 
             file.onchange = function(e){

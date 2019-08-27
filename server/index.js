@@ -43,7 +43,6 @@ app.get('/', function(req, res) {
 app.get('/share', generateSession, loadSession);
 app.get('/share/:session', loadSession)
 app.post('/share/file', upload.single('sessionFile'), function handleFiles(req, res, next) {
-    console.log('POTANGINA ')
     var buffer = req.file.buffer
     var finalImg = {
          contentType: req.file.mimetype,

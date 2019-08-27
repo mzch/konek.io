@@ -10,7 +10,6 @@ var socketUtility = (app) => {
         console.log("A new user just connected");
       
         socket.on('join', (session) => {
-          console.log(session)
           socket.join(session);
           socket['session-identity'] = session;
     
@@ -18,13 +17,11 @@ var socketUtility = (app) => {
         })
         
         socket.on('newFile', function(event) {
-            console.log('NEW FILES', event.data)
             socket.to(event.session).emit('updateFiles', event.data);
             
         })
     
         socket.on('newText', function(event) {
-            console.log('NEW TEXT', event)
             socket.to(event.session).emit('updateText', event.data);
             
         })
@@ -34,13 +31,11 @@ var socketUtility = (app) => {
             const socketFrom = socket['session-identity'];
             // console.log(socketSession.sockets.adapter.rooms[socketFrom])
             if(socketSession.sockets.adapter.rooms[socketFrom] === undefined){
-                console.log('no sockets to broadcast')
                 return;
             }
     
             socketSession.to(socketFrom).emit('updateClients', socketSession.sockets.adapter.rooms[socketFrom].sockets);
             delete socket['session-identity'];
-            console.log('done')
         });
     });
 

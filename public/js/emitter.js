@@ -2,7 +2,7 @@
  function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]}
 
  (function bindSessionToIO(){
-    const socket = io(`/`);
+    const socket = io(string.substr(string.lastIndexOf('/') + 1));
         // socket.emit('sessionSocket');\
         window.addEventListener('DOMContentLoaded', (event) => {
             const session = document.getElementById('sess-uid');

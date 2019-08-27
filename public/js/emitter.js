@@ -60,9 +60,8 @@
             file.onchange = function(e){
                 var files = this.files;
                 var name = files[0].name;
-                textArea.innerHTML = name;
-                textArea.setAttribute('readonly', true)
-                textArea.style.fontSize = '20px'
+                textArea.readOnly = true;
+                textArea.value = name;
              };
 
              if(dataForm){
@@ -109,8 +108,6 @@
                         }).catch((err) => alert(err))
                     }
 
-
-                    console.log('SHOULD BE UNREACHABLE');
                     const formData = new FormData();
     
                     formData.append('sessionFile', file.files[0]);
@@ -126,7 +123,6 @@
         
                         return res.json();
                     }).then((res) => {
-                        dataForm.reset();
                         const row = document.createElement('div');
                         row.classList.add('row');
                         const column = document.createElement('div');
@@ -146,7 +142,8 @@
                         column.appendChild(span)
                         column.appendChild(a)
                         filesContainer.prepend(row)
-
+                        textArea.readOnly = false;
+                        dataForm.reset();
                         socket.emit('newFile', {session: session.innerText, data: res});
                         
                     }).catch((err) => alert(err))

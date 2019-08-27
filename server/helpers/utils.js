@@ -4,7 +4,16 @@ module.exports = {
     database: (config) => {
                 /* DB initializaiton */
         const database = `mongodb://${config.username}:${config.password}@ds263927.mlab.com:63927/konek`;
-        mongoose.connect(database, { useNewUrlParser: true });
+        connect = () => {
+            mongoose.connect(database, { useNewUrlParser: true }, err => {
+                if(err) throw err;
+            })
+            .catch((err) => {
+                console.log('Attempting to reconnect..')
+                setTimeout(connect, 5000);
+            })
+        }
+        connect()
         mongoose.set('useFindAndModify', false);
         const db = mongoose.connection;
 

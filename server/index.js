@@ -42,7 +42,19 @@ app.get('/', function(req, res) {
 
 app.get('/share', generateSession, loadSession);
 app.get('/share/:session', loadSession)
-app.post('/share/file', upload.single('sessionFile'), handleFiles)
+app.post('/share/file', upload.single('sessionFile'), function handleFiles(req, res, next) {
+    var buffer = req.file.buffer
+    var finalImg = {
+         contentType: req.file.mimetype,
+         image:  new Buffer(buffer, 'base64'),
+         fileName: req.file.originalname,
+         size: req.file.size
+      };
+
+      res.status(200).json({ data: finalImg, code: 200 });
+    
+    
+})
 app.post('/share/message', checkContentType)
 app.get('/connect', connectToSession);
 app.post('/connect', ValidateCode, loadSession);
@@ -115,21 +127,6 @@ function generateSession(req, res, next){
 
 
 
-function handleFiles(req, res, next) {
-    console.log('hit')
-    console.log(req.file)
-    var buffer = req.file.buffer
-    var finalImg = {
-         contentType: req.file.mimetype,
-         image:  new Buffer(buffer, 'base64'),
-         fileName: req.file.originalname,
-         size: req.file.size
-      };
-
-      res.status(200).json({ data: finalImg, code: 200 });
-    
-    
-}
 
 function checkContentType(req, res, next){
         const text = {

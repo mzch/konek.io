@@ -126,7 +126,7 @@
         
                         return res.json();
                     }).then((res) => {
-                    
+                        dataForm.reset();
                         const row = document.createElement('div');
                         row.classList.add('row');
                         const column = document.createElement('div');
@@ -148,7 +148,7 @@
                         filesContainer.prepend(row)
 
                         socket.emit('newFile', {session: session.innerText, data: res});
-                        dataForm.reset();
+                        
                     }).catch((err) => alert(err))
                 })
             

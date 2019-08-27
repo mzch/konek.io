@@ -10,6 +10,9 @@
   <% include partials/header.ejs %> 
   <div class="section upload-main">
       <p>Enter a valid code to connect</p>
+      <% if (typeof res != 'undefined') { %>
+        <p><% res %></p>
+      <% } %>
       <div class="container">
           <row>
                 <form method="POST" action="/connect">

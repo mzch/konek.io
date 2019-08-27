@@ -2,7 +2,7 @@
  function formatBytes(a,b){if(0==a)return"0 Bytes";var c=1024,d=b||2,e=["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"],f=Math.floor(Math.log(a)/Math.log(c));return parseFloat((a/Math.pow(c,f)).toFixed(d))+" "+e[f]}
 
  (function bindSessionToIO(){
-    const socket = io(string.substr(string.lastIndexOf('/') + 1));
+    const socket = io('/');
         // socket.emit('sessionSocket');\
         window.addEventListener('DOMContentLoaded', (event) => {
             const session = document.getElementById('sess-uid');
@@ -27,12 +27,40 @@
                     const row = document.createElement('div');
                     row.classList.add('row', 'message');
                     const column = document.createElement('div');
-                    column.classList.add('one-half', 'columns');
-                    const h3 = document.createElement('h3');
-                    h3.innerText = i
+                    column.classList.add('one-half', 'columns', 'messages');
+                    const h3 = document.createElement('p');
+                    h3.innerText = i.text
+                    h3.setAttribute('id', i._id.substring(1, 10))
+                    const span = document.createElement('span');
+                    span.classList.add('clip')
+                    span.setAttribute('data-clipboard-target', `#${i._id.substring(1, 10)}`)
                     row.appendChild(column);
                     column.appendChild(h3)
+                    column.appendChild(span)
+                    const fa = document.createElement('i');
+                    fa.classList.add('fa', 'fa-copy');
+                    fa.setAttribute('aria-hidden', 'true')
+                    span.appendChild(fa)
                     filesContainer.prepend(row)
+
+                    // const row = document.createElement('div');
+                    // row.classList.add('row');
+                    // const column = document.createElement('div');
+                    // column.classList.add('one-half', 'columns', 'messages');
+                    // const h3 = document.createElement('p');
+                    // h3.innerText = res.data.TextArray[res.data.TextArray.length - 1].text
+                    // h3.setAttribute('id', res.data.TextArray[res.data.TextArray.length - 1]._id.substring(1, 10))
+                    // const span = document.createElement('span');
+                    // span.classList.add('clip')
+                    // span.setAttribute('data-clipboard-target', `#${res.data.TextArray[res.data.TextArray.length - 1]._id.substring(1, 10)}`)
+                    // row.appendChild(column);
+                    // column.appendChild(h3)
+                    // column.appendChild(span)
+                    // const i = document.createElement('i');
+                    // i.classList.add('fa', 'fa-copy');
+                    // i.setAttribute('aria-hidden', 'true')
+                    // span.appendChild(i)
+                    // filesContainer.prepend(row)
                 })
             })
 

@@ -91,6 +91,7 @@
             
                             return res.json();
                         }).then((res) => {
+                            socket.emit('newText', {session: session.innerText, data: res});
                             const row = document.createElement('div');
                             row.classList.add('row');
                             const column = document.createElement('div');
@@ -109,7 +110,6 @@
                             i.setAttribute('aria-hidden', 'true')
                             span.appendChild(i)
                             filesContainer.prepend(row)
-                            socket.emit('newText', {session: session.innerText, data: res});
                             dataForm.reset();
                         }).catch((err) => alert(err))
                     }
@@ -129,6 +129,7 @@
         
                         return res.json();
                     }).then((res) => {
+                        socket.emit('newFile', {session: session.innerText, data: res});
                         console.log(res)
                         const row = document.createElement('div');
                         row.classList.add('row');
@@ -151,8 +152,7 @@
                         filesContainer.prepend(row)
                         textArea.readOnly = false;
                         dataForm.reset();
-                        socket.emit('newFile', {session: session.innerText, data: res});
-                        
+                       
                     }).catch((err) => alert(err))
                 })
             

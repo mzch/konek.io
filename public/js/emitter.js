@@ -68,6 +68,7 @@
 
             file.onchange = function(e){
                 var files = this.files;
+                console.log(files[0])
                 var name = files[0].name;
                 textArea.readOnly = true;
                 textArea.value = name;

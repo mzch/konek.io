@@ -29,11 +29,11 @@
                     const column = document.createElement('div');
                     column.classList.add('one-half', 'columns', 'messages');
                     const h3 = document.createElement('p');
-                    h3.innerText = text.data.TextArray[text.data.TextArraylength - 1]
-                    h3.setAttribute('id', text.data.TextArray[text.data.TextArraylength - 1].substring(1, 10))
+                    h3.innerText = text.data.TextArray[text.data.TextArray.length - 1]
+                    h3.setAttribute('id', text.data.TextArray[text.data.TextArray.length - 1].substring(1, 10))
                     const span = document.createElement('span');
                     span.classList.add('clip')
-                    span.setAttribute('data-clipboard-target', `#${text.data.TextArray[text.data.TextArraylength - 1].substring(1, 10)}`)
+                    span.setAttribute('data-clipboard-target', `#${text.data.TextArray[text.data.TextArray.length - 1].substring(1, 10)}`)
                     row.appendChild(column);
                     column.appendChild(h3)
                     column.appendChild(span)

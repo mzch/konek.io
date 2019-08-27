@@ -44,46 +44,26 @@
                     fa.setAttribute('aria-hidden', 'true')
                     span.appendChild(fa)
                     filesContainer.prepend(row)
-
-                    // const row = document.createElement('div');
-                    // row.classList.add('row');
-                    // const column = document.createElement('div');
-                    // column.classList.add('one-half', 'columns', 'messages');
-                    // const h3 = document.createElement('p');
-                    // h3.innerText = res.data.TextArray[res.data.TextArray.length - 1].text
-                    // h3.setAttribute('id', res.data.TextArray[res.data.TextArray.length - 1]._id.substring(1, 10))
-                    // const span = document.createElement('span');
-                    // span.classList.add('clip')
-                    // span.setAttribute('data-clipboard-target', `#${res.data.TextArray[res.data.TextArray.length - 1]._id.substring(1, 10)}`)
-                    // row.appendChild(column);
-                    // column.appendChild(h3)
-                    // column.appendChild(span)
-                    // const i = document.createElement('i');
-                    // i.classList.add('fa', 'fa-copy');
-                    // i.setAttribute('aria-hidden', 'true')
-                    // span.appendChild(i)
-                    // filesContainer.prepend(row)
             })
 
             socket.on('updateFiles', function(file){
-                file.data.FileArray.forEach((i) => {
-                    const row = document.createElement('div');
-                    row.classList.add('row');
-                    const column = document.createElement('div');
-                    column.classList.add('one-half', 'columns');
-                    const h3 = document.createElement('h3');
-                    h3.innerText = i.fileName
-                    const span = document.createElement('span');
-                    span.innerText = formatBytes(i.size);
-                    const a = document.createElement('a');
-                    a.classList.add('button')
-                    a.innerText = 'Download'
-                    row.appendChild(column);
-                    column.appendChild(h3)
-                    column.appendChild(span)
-                    column.appendChild(a)
-                    filesContainer.prepend(row)
-                })
+                console.log(file)
+                const row = document.createElement('div');
+                row.classList.add('row');
+                const column = document.createElement('div');
+                column.classList.add('one-half', 'columns');
+                const h3 = document.createElement('h3');
+                h3.innerText = file.data.fileName
+                const span = document.createElement('span');
+                span.innerText = formatBytes(file.data.size);
+                const a = document.createElement('a');
+                a.classList.add('button')
+                a.innerText = 'Download'
+                row.appendChild(column);
+                column.appendChild(h3)
+                column.appendChild(span)
+                column.appendChild(a)
+                filesContainer.prepend(row)
             })
 
             file.onchange = function(e){
@@ -96,7 +76,6 @@
              if(dataForm){
                 dataForm.addEventListener('submit', function(e) {
                     e.preventDefault();
-                    console.log(e.target.text.value)
                     if(file.files.length <= 0) {
                         return fetch('/share/message', {
                             method: 'POST',
@@ -112,18 +91,16 @@
             
                             return res.json();
                         }).then((res) => {
-                            var clipboard = new ClipboardJS('.clip');
-                            console.log(res)
                             const row = document.createElement('div');
                             row.classList.add('row');
                             const column = document.createElement('div');
                             column.classList.add('one-half', 'columns', 'messages');
                             const h3 = document.createElement('p');
-                            h3.innerText = res.data.TextArray[res.data.TextArray.length - 1].text
-                            h3.setAttribute('id', res.data.TextArray[res.data.TextArray.length - 1]._id.substring(1, 10))
+                            h3.innerText = res.data.text
+                            h3.setAttribute('id', res.data._id.substring(1, 10))
                             const span = document.createElement('span');
                             span.classList.add('clip')
-                            span.setAttribute('data-clipboard-target', `#${res.data.TextArray[res.data.TextArray.length - 1]._id.substring(1, 10)}`)
+                            span.setAttribute('data-clipboard-target', `#${res.data._id.substring(1, 10)}`)
                             row.appendChild(column);
                             column.appendChild(h3)
                             column.appendChild(span)
@@ -152,20 +129,21 @@
         
                         return res.json();
                     }).then((res) => {
+                        console.log(res)
                         const row = document.createElement('div');
                         row.classList.add('row');
                         const column = document.createElement('div');
                         column.classList.add('one-half', 'columns');
                         const h3 = document.createElement('h3');
-                        h3.innerText = res.data.FileArray[res.data.FileArray.length - 1].fileName
+                        h3.innerText = res.data.fileName
                         const span = document.createElement('span');
-                        span.innerText = formatBytes(res.data.FileArray[res.data.FileArray.length - 1].size);
+                        span.innerText = formatBytes(res.data.size);
                         const a = document.createElement('a');
                         a.classList.add('button', 'download')
                         a.innerText = 'Download'
                         // 'data:image/jpeg;base64,/9j/4AAQSkZ...'
-                        a.setAttribute('href', `data:${res.data.FileArray[res.data.FileArray.length - 1].contentType};base64,${res.data.FileArray[res.data.FileArray.length - 1].image}`)
-                        a.setAttribute('download', res.data.FileArray[res.data.FileArray.length - 1].fileName)
+                        a.setAttribute('href', `data:${res.data.contentType};base64,${res.data.image}`)
+                        a.setAttribute('download', res.data.fileName)
                         row.appendChild(column);
                         column.appendChild(h3)
                         column.appendChild(span)

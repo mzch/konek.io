@@ -114,6 +114,7 @@ function generateSession(req, res, next){
 
 
 function handleFiles(req, res, next) {
+    console.log(req.file)
     var buffer = req.file.buffer
     var finalImg = {
          contentType: req.file.mimetype,
@@ -141,7 +142,7 @@ function handleFiles(req, res, next) {
             }
 
             if(ok){
-                return res.status(200).json({ data: ok, code: 200 });
+                return res.status(200).json({ data: finalImg, code: 200 });
             }
       });
     
@@ -173,7 +174,7 @@ function checkContentType(req, res, next){
               }
   
               if(ok){
-                  return res.status(200).json({ data: ok, code: 200 });
+                  return res.status(200).json({ data: text, code: 200 });
               }
         });
 }

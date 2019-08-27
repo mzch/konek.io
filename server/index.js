@@ -86,6 +86,8 @@ function loadSession(req, res, next){
                     code: session.code,
                     _id: session._id
                 };
+
+                req.session.data = payload;
                 res.render('share', {data: payload, clients_count: 0});
             } else {
                 res.render('connect', {res: 'Invalid Code'});
@@ -114,6 +116,7 @@ function generateSession(req, res, next){
 
 
 function handleFiles(req, res, next) {
+    console.log('hit')
     console.log(req.file)
     var buffer = req.file.buffer
     var finalImg = {
@@ -123,28 +126,7 @@ function handleFiles(req, res, next) {
          size: req.file.size
       };
 
-      File.findOneAndUpdate( { 
-          SessionId : req.session.data._id  
-        },  
-        { 
-            $push: { 
-                    FileArray: finalImg  
-                } 
-        }, 
-        { 
-            upsert : true ,
-            new: true
-        }, 
-        
-        (err, ok) => {
-            if(err){
-                return res.status(501).json({ data: [], code: 501 });
-            }
-
-            if(ok){
-                return res.status(200).json({ data: finalImg, code: 200 });
-            }
-      });
+      res.status(200).json({ data: finalImg, code: 200 });
     
     
 }
@@ -154,29 +136,8 @@ function checkContentType(req, res, next){
             text: req.body.text,
             _id: mongoose.Types.ObjectId()
         };
-        console.log(req.body)
-        Text.findOneAndUpdate( { 
-            SessionId : req.session.data._id  
-          },  
-          { 
-              $push: { 
-                      TextArray: text 
-                  } 
-          }, 
-          { 
-              upsert : true ,
-              new: true
-          }, 
-          
-          (err, ok) => {
-              if(err){
-                  return res.status(501).json({ data: [], code: 501 });
-              }
-  
-              if(ok){
-                  return res.status(200).json({ data: text, code: 200 });
-              }
-        });
+     
+        res.status(200).json({ data: text, code: 200 });
 }
 
 

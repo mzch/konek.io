@@ -5,7 +5,7 @@ const session = require('express-session')
 const bodyParser = require("body-parser");
 const multer = require('multer');
 const path = require('path');
-
+const mongoose = require('mongoose');
 /* server lib */
 const io = require('./helpers/socket');
 const config = require('./helpers/utils')
@@ -151,7 +151,7 @@ function handleFiles(req, res, next) {
 function checkContentType(req, res, next){
         const text = {
             text: req.body.text,
-            _id: require('mongoose').mongoose.Types.ObjectId()
+            _id: mongoose.Types.ObjectId()
         };
         console.log(req.body)
         Text.findOneAndUpdate( { 

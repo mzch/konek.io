@@ -1,3 +1,12 @@
+const io = require('@pm2/io')
+
+io.init({
+  metrics: {
+    network: {
+      ports: true
+    }
+  }
+})
 /* libs */
 require('dotenv').config()
 const express = require('express');

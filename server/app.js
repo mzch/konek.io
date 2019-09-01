@@ -1,6 +1,6 @@
-const io = require('@pm2/io')
+const pmio = require('@pm2/io')
 
-io.init({
+pmio.init({
   metrics: {
     network: {
       ports: true

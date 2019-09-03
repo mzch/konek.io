@@ -7,17 +7,13 @@
         window.addEventListener('DOMContentLoaded', (event) => {
             const session = document.getElementById('sess-uid');
             const textArea = document.getElementById('text-area')
-            console.log(session.innerText)
             const file = document.getElementById('file-input')
             const dataForm = document.getElementsByClassName('connection-files')[0];
             const filesContainer = document.getElementsByClassName('files-container')[0]
-            socket.on('connect', function() {
-                console.log(session.innerText)
-                socket.emit('join', session.innerText)
-              });
+
+            socket.emit('join', session.innerText)
 
             socket.on('updateClients', function(data) {
-                console.log(Object.keys(data).length)
                 document.getElementById('clients-count').innerHTML = Object.keys(data).length;
             })
 

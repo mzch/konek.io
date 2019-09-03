@@ -5,6 +5,7 @@
     const socket = io('/');
         // socket.emit('sessionSocket');\
         window.addEventListener('DOMContentLoaded', (event) => {
+            new ClipboardJS('.clip');
             const session = document.getElementById('sess-uid');
             const textArea = document.getElementById('text-area')
             const file = document.getElementById('file-input')
@@ -18,7 +19,7 @@
             })
 
             socket.on('updateText', function(newText){
-                console.log(newText)
+                    const clipboardID = Math.random().toString(36).substring(7);
                     const row = document.createElement('div');
                     row.classList.add('row', 'message');
                     const column = document.createElement('div');
@@ -26,11 +27,11 @@
                     const h3 = document.createElement('p');
                
                     h3.innerText = newText.data.text
-                    h3.setAttribute('id', newText.data._id.substring(1, 10))
+                    h3.setAttribute('id', clipboardID)
    
                     const span = document.createElement('span');
                     span.classList.add('clip')
-                    span.setAttribute('data-clipboard-target', `#${newText.data._id.substring(1, 10)}`)
+                    span.setAttribute('data-clipboard-target', `#${clipboardID}`)
                                                
                     row.appendChild(column);
                     column.appendChild(h3)
@@ -91,6 +92,7 @@
             
                             return res.json();
                         }).then((res) => {
+                            const clipboardID = Math.random().toString(36).substring(7);
                             socket.emit('newText', {session: session.innerText, data: res});
                             const row = document.createElement('div');
                             row.classList.add('row');
@@ -98,10 +100,10 @@
                             column.classList.add('one-half', 'columns', 'messages');
                             const h3 = document.createElement('p');
                             h3.innerText = res.data.text
-                            h3.setAttribute('id', res.data._id.substring(1, 10))
+                            h3.setAttribute('id', clipboardID)
                             const span = document.createElement('span');
                             span.classList.add('clip')
-                            span.setAttribute('data-clipboard-target', `#${res.data._id.substring(1, 10)}`)
+                            span.setAttribute('data-clipboard-target', `#${clipboardID}`)
                             row.appendChild(column);
                             column.appendChild(h3)
                             column.appendChild(span)

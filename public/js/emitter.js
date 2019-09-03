@@ -126,13 +126,12 @@
                     })
                     .then((res) => {
                         if(!res.ok){
-                            throw new Error('Unable to process network request this time.');
+                            throw new Error('Unable to process: File might be too large.');
                         }
-        
+
                         return res.json();
                     }).then((res) => {
                         socket.emit('newFile', {session: session.innerText, data: res});
-                        console.log(res)
                         const row = document.createElement('div');
                         row.classList.add('row');
                         const column = document.createElement('div');

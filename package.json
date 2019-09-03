@@ -6,7 +6,8 @@
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec",
     "dev": "pm2 start server/app.js",
-    "start": "nodemon ./lib/frameworks_drivers/server"
+    "start": "nodemon ./lib/frameworks_drivers/server",
+    "build": "webpack --config webpack.config.js --mode production"
   },
   "keywords": [],
   "author": "",

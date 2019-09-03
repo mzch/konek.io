@@ -1,5 +1,5 @@
 const expect = require("chai").expect;
-const utils = require('../server/helpers/utils');
+const db = require('../lib/frameworks_drivers/database');
 
 require("dotenv").config();
 
@@ -26,11 +26,10 @@ describe('test configs', function () {
 
                 expect(function () {
 
-                    utils.db(config)
+                    db.config(config)
                     done()
                 }).to.throw(TypeError, 'Unable to connect to database.')
-                // .to.throw(new Error('Property does not exist in model schema.'));
-            })
+              })
         })
 
         context('without required keys', function () {
@@ -42,10 +41,10 @@ describe('test configs', function () {
 
                 expect(function () {
 
-                    utils.db(config)
+                    db.config(config)
                     done()
                 }).to.throw(TypeError, 'Unable to connect to database.')
-                // .to.throw(new Error('Property does not exist in model schema.'));
+
             })
         })
     })

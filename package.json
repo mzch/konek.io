@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "./node_modules/.bin/mocha --reporter spec",
     "dev": "pm2 start server/app.js",
-    "start": "node server/app.js"
+    "start": "nodemon ./lib/frameworks_drivers/server"
   },
   "keywords": [],
   "author": "",
@@ -29,7 +29,9 @@
     "pm2": "^3.5.1"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "concurrently": "^4.1.2",
+    "mocha": "^6.2.0",
     "style-loader": "^1.0.0",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.6"

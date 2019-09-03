@@ -1,5 +1,4 @@
 # Konek.io
-Gamers hub social network
 Simple file and text sharing app
 
 ## Setup

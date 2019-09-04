@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/justinemar/konek.io.svg?token=nt6HsCczpAhbrgXGvsyC&branch=master)](https://travis-ci.com/justinemar/konek.io)
+
 # Konek.io
 Simple file and text sharing app
 

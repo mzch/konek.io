@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines" : { 
+    "node" : ">=8.13.0"
+    },
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec",
     "dev": "webpack --config webpack.config.js --mode development",

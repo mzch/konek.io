@@ -1,6 +1,31 @@
 
 function formatBytes(a, b) { if (0 == a) return "0 Bytes"; var c = 1024, d = b || 2, e = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"], f = Math.floor(Math.log(a) / Math.log(c)); return parseFloat((a / Math.pow(c, f)).toFixed(d)) + " " + e[f] }
 
+function createText(content) {
+    const filesContainer = document.getElementsByClassName('files-container')[0]
+    const clipboardID = Math.random().toString(36).substring(7);
+    const row = document.createElement('div');
+    row.classList.add('row', 'message');
+    const column = document.createElement('div');
+    column.classList.add('one-half', 'columns', 'messages');
+    const h3 = document.createElement('p');
+
+    h3.innerText = content.data.text
+    h3.setAttribute('id', clipboardID)
+
+    const span = document.createElement('span');
+    span.classList.add('clip')
+    span.setAttribute('data-clipboard-target', `#${clipboardID}`)
+
+    row.appendChild(column);
+    column.appendChild(h3)
+    column.appendChild(span)
+    const fa = document.createElement('i');
+    fa.classList.add('fa', 'fa-copy');
+    fa.setAttribute('aria-hidden', 'true')
+    span.appendChild(fa)
+    filesContainer.prepend(row)
+}
 
 (function bindSessionToIO() {
     const socket = io('/');
@@ -52,16 +77,18 @@ function formatBytes(a, b) { if (0 == a) return "0 Bytes"; var c = 1024, d = b |
 
                             return res.json();
                         }).then((res) => {
-                            createText(res, () => {
-                                socket.emit('newText', {session: session.innerText, data: res});
-                            });
+                            createText(res);
+                            socket.emit('newText', { session: session.innerText, data: res });
                             dataForm.reset();
                         }).catch((err) => alert(err))
                 }
 
-                submitWithFiles(file, () => {
+                submitWithFiles(file)
+                .then((res) => {
+                    createFiles(res)
                     socket.emit('newFile', { session: session.innerText, data: res });
-                });
+                    dataForm.reset();
+                })
             })
 
         }
@@ -75,57 +102,28 @@ function formatBytes(a, b) { if (0 == a) return "0 Bytes"; var c = 1024, d = b |
 
 
 
-function submitWithFiles(file, emit){
+function submitWithFiles(file) {
     const formData = new FormData();
     const loader = document.getElementsByClassName('lds-facebook')[0];
     console.log(loader)
     formData.append('sessionFile', file.files[0]);
-
-    fetch('/share/file', {
+    return fetch('/share/file', {
         method: 'POST',
         body: formData
     })
-        .then((res) => {
-            if (!res.ok) {
-                throw new Error('Unable to process: File might be too large.');
-            }
+    .then((res) => {
+        if (!res.ok) {
+            throw new Error('Unable to process: File might be too large.');
+        }
 
-            return res.json();
-        }).then((res) => {
-            emit()
-            createFiles(res)
-            dataForm.reset();
-
-        }).catch((err) => alert(err))
+        return res.json();
+    }).then((res) => {
+        return res;
+    }).catch((err) => alert(err))
 }
 
 
-function createText(content, emit) {
-    const filesContainer = document.getElementsByClassName('files-container')[0]
-    const clipboardID = Math.random().toString(36).substring(7);
-    emit()
-    const row = document.createElement('div');
-    row.classList.add('row', 'message');
-    const column = document.createElement('div');
-    column.classList.add('one-half', 'columns', 'messages');
-    const h3 = document.createElement('p');
 
-    h3.innerText = content.data.text
-    h3.setAttribute('id', clipboardID)
-
-    const span = document.createElement('span');
-    span.classList.add('clip')
-    span.setAttribute('data-clipboard-target', `#${clipboardID}`)
-
-    row.appendChild(column);
-    column.appendChild(h3)
-    column.appendChild(span)
-    const fa = document.createElement('i');
-    fa.classList.add('fa', 'fa-copy');
-    fa.setAttribute('aria-hidden', 'true')
-    span.appendChild(fa)
-    filesContainer.prepend(row)
-}
 
 function createFiles(file) {
     const filesContainer = document.getElementsByClassName('files-container')[0]
@@ -148,4 +146,5 @@ function createFiles(file) {
     column.appendChild(span)
     column.appendChild(a)
     filesContainer.prepend(row)
+
 }

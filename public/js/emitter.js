@@ -11,7 +11,6 @@ function formatBytes(a, b) { if (0 == a) return "0 Bytes"; var c = 1024, d = b |
         const textArea = document.getElementById('text-area')
         const file = document.getElementById('file-input')
         const dataForm = document.getElementsByClassName('connection-files')[0];
-        const filesContainer = document.getElementsByClassName('files-container')[0]
 
         socket.emit('join', session.innerText)
 
@@ -53,12 +52,16 @@ function formatBytes(a, b) { if (0 == a) return "0 Bytes"; var c = 1024, d = b |
 
                             return res.json();
                         }).then((res) => {
-                            createText(res);
+                            createText(res, () => {
+                                socket.emit('newText', {session: session.innerText, data: res});
+                            });
                             dataForm.reset();
                         }).catch((err) => alert(err))
                 }
 
-                submitWithFiles(file);
+                submitWithFiles(file, () => {
+                    socket.emit('newFile', { session: session.innerText, data: res });
+                });
             })
 
         }
@@ -72,9 +75,10 @@ function formatBytes(a, b) { if (0 == a) return "0 Bytes"; var c = 1024, d = b |
 
 
 
-function submitWithFiles(file){
+function submitWithFiles(file, emit){
     const formData = new FormData();
-
+    const loader = document.getElementsByClassName('lds-facebook')[0];
+    console.log(loader)
     formData.append('sessionFile', file.files[0]);
 
     fetch('/share/file', {
@@ -88,7 +92,7 @@ function submitWithFiles(file){
 
             return res.json();
         }).then((res) => {
-            socket.emit('newFile', { session: session.innerText, data: res });
+            emit()
             createFiles(res)
             dataForm.reset();
 
@@ -96,8 +100,10 @@ function submitWithFiles(file){
 }
 
 
-function createText(content) {
+function createText(content, emit) {
+    const filesContainer = document.getElementsByClassName('files-container')[0]
     const clipboardID = Math.random().toString(36).substring(7);
+    emit()
     const row = document.createElement('div');
     row.classList.add('row', 'message');
     const column = document.createElement('div');
@@ -122,6 +128,7 @@ function createText(content) {
 }
 
 function createFiles(file) {
+    const filesContainer = document.getElementsByClassName('files-container')[0]
     const row = document.createElement('div');
     row.classList.add('row');
     const column = document.createElement('div');

@@ -7,13 +7,26 @@ Simple file and text sharing app
 
 You need to use at least node 7 to run this project.
 
+## Environments
+
+|Variable|Value|Default|
+|----|----|----|
+|PORT| Server listen port| 8080|
+|DB_HOST| MongoDB host| localhost|
+|DB_PORT| MongoDB port| 27017|
+|DB_NAME| MongoDB database| konek
+|DB_USER| MongoDB username| |
+|DB_PASS| MongoDB password| |
+|SECRET_KEY| Secret base key for generating sessions|123456|
+
+
 ## Running
 
 * Run `npm install`
 * Run `npm run nodemon`
 * Run `npm run dev`
 
-# Testing
+## Testing
 
 * Run `npm test`
 

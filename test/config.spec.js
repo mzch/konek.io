@@ -7,8 +7,8 @@ describe('test configs', function () {
 
     describe('process.env required keys', function () {
 
-        it('should have DB key', function () {
-            expect(process.env).to.have.own.property('DB');
+        it('should have DB_USER key', function () {
+            expect(process.env).to.have.own.property('DB_USER');
         })
 
         it('should have DB_PASS key', function () {
